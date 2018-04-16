@@ -1,0 +1,2 @@
+# rust
+rust practice repository
