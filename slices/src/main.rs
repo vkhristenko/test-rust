@@ -12,16 +12,23 @@ fn main() {
 
     let slice = &s[0..2];
     let slice = &s[..2];
+
+    let slice = &s[0..];
+    let slice = &s[..];
+
+    let a = [1,2,4,5,6];
+    let sss = &a[1..3];
+    println!("{:?}", sss);
 }
 
-fn first_word(s: &String) -> usize {
+fn first_word(s: &String) -> &str {
     let bytes = s.as_bytes();
 
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
-            return i;
+            return &s[0..i];
         }
     }
 
-    s.len()
+    &s[..]
 }
