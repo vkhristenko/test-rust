@@ -24,4 +24,12 @@ fn main() {
         let third: i32 = v[2];
         let third: Option<&i32> = v.get(2);
     }
+
+    {
+        let mut s = String::new();
+
+        let data = "initial contents";
+        let s = data.to_string();
+        let s = "initial contents".to_string();
+    }
 }
