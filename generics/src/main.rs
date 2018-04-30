@@ -1,3 +1,10 @@
+mod summary;
+
+use summary::Summarizable;
+use summary::Tweet;
+
+use std::fmt::Display;
+
 fn main() {
     println!("Hello, world!");
 
@@ -29,20 +36,29 @@ fn main() {
         let p = Point { x: 10, y: 20};
         println!("p.x = {}", p.x());
     }
+
+    {
+        let tweet = summary::Tweet {
+            username: String::from("horse_ebooks"),
+            content: String::from("of course, as you probably already know, people"),
+            reply: false,
+            retweet: false
+        };
+        
+        println!("1 new tweet: {}", tweet.summary());
+    }
 }
 
-/*
-fn largest<T>(list: &[T]) -> T {
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut max = list[0];
-    /*
     for &item in list.iter() {
         if item > max {
             max = item;
         }
-    }*/
+    }
 
-    
-}*/
+    max
+}
 
 fn largest_i32(list: &[i32]) -> i32 {
     let mut max = list[0];
