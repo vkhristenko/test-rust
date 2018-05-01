@@ -1,7 +1,9 @@
 mod summary;
+mod pair;
 
 use summary::Summarizable;
 use summary::Tweet;
+use pair::Pair;
 
 use std::fmt::Display;
 
