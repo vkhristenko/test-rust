@@ -6,13 +6,11 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
-    println!("Hello, world!");
-
     // get the cli arguments
     let args: Vec<String> = env::args().collect();
 
     let config = Config::new(&args).unwrap_or_else(|err|{
-        println!("problem parsing cli args: {}", err);
+        eprintln!("problem parsing cli args: {}", err);
         process::exit(1);
     });
     println!("Searching for {}", config.query);
@@ -20,7 +18,7 @@ fn main() {
     println!("******************");
 
     if let Err(e) = minigrep::run(config) {
-        println!("application error: {}", e);
+        eprintln!("application error: {}", e);
 
         process::exit(1);
     }
@@ -58,5 +56,6 @@ fn parse_config(args: &[String]) -> Result<Config, &'static str> {
     let query = args[1].clone();
     let filename = args[2].clone();
 
-    Ok(Config { query, filename })
+    let case_sensitive = true;
+    Ok(Config { query, filename, case_sensitive })
 }
