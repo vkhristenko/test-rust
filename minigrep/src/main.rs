@@ -1,8 +1,9 @@
+extern crate minigrep;
+
 use std::env;
-use std::error::Error;
 use std::process;
-use std::fs::File;
-use std::io::prelude::*;
+
+use minigrep::Config;
 
 fn main() {
     println!("Hello, world!");
@@ -17,13 +18,11 @@ fn main() {
     println!("Searching for {}", config.query);
     println!("In file {}", config.filename);
 
-    if let Err(e) == run(config) {
+    if let Err(e) = minigrep::run(config) {
         println!("application error: {}", e);
 
         process::exit(1);
     }
-
-    run(config);
 
    // let mut f = File::open(config.filename).expect("file not found");
 
