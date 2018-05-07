@@ -7,6 +7,10 @@ fn main() {
 
     // get the cli arguments
     let args: Vec<String> = env::args().collect();
+
+    let (query, filename) = parse_config(&args);
+
+    /*
     println!("{:?}", args);
 
     // save them to vars
@@ -23,4 +27,12 @@ fn main() {
         .expect("something went wrong reading the file");
     
     println!("test:\n************************\n {}", contents);
+    */
+}
+
+fn parse_config(args: &[String]) -> (&str, &str) {
+    let query = &args[1];
+    let filename = &args[2];
+
+    (query, filename)
 }
