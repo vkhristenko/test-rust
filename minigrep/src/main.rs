@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::process;
 use std::fs::File;
 use std::io::prelude::*;
@@ -16,7 +17,17 @@ fn main() {
     println!("Searching for {}", config.query);
     println!("In file {}", config.filename);
 
-    let mut f = File::open(config.filename).expect("file not found");
+    if let Err(e) == run(config) {
+        println!("application error: {}", e);
+
+        process::exit(1);
+    }
+
+    run(config);
+
+   // let mut f = File::open(config.filename).expect("file not found");
+
+
 
     /*
     println!("{:?}", args);
@@ -36,24 +47,6 @@ fn main() {
     
     println!("test:\n************************\n {}", contents);
     */
-}
-
-struct Config {
-    query: String,
-    filename: String,
-}
-
-impl Config {
-    fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough args");
-        }
-
-        let query = args[1].clone();
-        let filename = args[2].clone();
-
-        Ok(Config { query, filename })
-    }
 }
 
 fn parse_config(args: &[String]) -> Result<Config, &'static str> {
