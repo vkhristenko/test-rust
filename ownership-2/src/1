@@ -1,0 +1,22 @@
+fn main() {
+    let mut _s = String::from("hello");
+
+    _s.push_str(", world");
+
+    println!("{}", _s);
+
+    println!("Hello, world!");
+
+    test0();
+}
+
+#[warn(unused_variables)]
+fn test0() {
+    let x = 5;
+    let y = x;
+
+    let s1 = String::from("hello");
+    let s2 = s1;
+
+    println!("{}", s1);
+}
