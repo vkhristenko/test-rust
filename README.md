@@ -2,7 +2,7 @@
 rust practice repository
 
 ## Outline:
-- Ownership
-- References and Borring
-- Slices
+- [x] Ownership
+- [ ] References and Borring
+- [ ] Slices
 
