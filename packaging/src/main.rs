@@ -1,3 +1,5 @@
+mod sound2;
+
 mod sound {
     pub mod instrument {
         pub fn clarinet() {
@@ -7,6 +9,15 @@ mod sound {
     }
 
     fn breathe_in() {
+    }
+}
+
+mod performance_group {
+    pub use crate::sound::instrument;
+
+    pub fn clarinet_trio() {
+        instrument::clarinet();
+        instrument::clarinet();
     }
 }
 
@@ -48,6 +59,10 @@ fn test0() {
     //println!("the id is {}", v.id);
 }
 
+use std::fmt::Result;
+use std::io::Result as IoResult;
+use std::{cmp::Ordering, io};
+
 fn main() {
     println!("Hello, world!");
 
@@ -56,4 +71,8 @@ fn main() {
 
     // relative path
     sound::instrument::clarinet();
+
+    performance_group::instrument::clarinet();
+
+    sound2::instrument::clarinet();
 }
