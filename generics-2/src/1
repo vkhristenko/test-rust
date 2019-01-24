@@ -1,24 +1,24 @@
-use std::fmt::{Display, Debug};
+use std::fmt::Display;
 
 fn main() {
     println!("Hello, world!");
 
-    test0();
+    //test0();
     test1();
     test2();
     test3();
     test4();
 }
 
-
+/*
 fn test0() {
     let list = vec![1,2,3,4,5,6];
     let result = largest(&list[..]);
     println!("largest is {}", result);
 }
 
-fn largest<T: std::cmp::PartialOrd + Copy>(list: &[T]) -> T {
-    let mut largest = list[0];
+fn largest<T>(list: &[T]) -> T {
+    let largest = list[0];
     for &item in list.iter() {
         if item > largest {
             largest = item;
@@ -27,6 +27,7 @@ fn largest<T: std::cmp::PartialOrd + Copy>(list: &[T]) -> T {
 
     largest
 }
+*/
 
 struct Point<T> {
     x: T,
@@ -146,47 +147,8 @@ pub fn notify(item: & impl Summary) {
     println!("breaking news: {}", item.summarize());
 }
 
-pub trait SomeTrait {
-    fn some_func() {}
-}
-
-pub fn notify_trait_bounds<T: Summary + SomeTrait>(item: &T) {
+pub fn notify_trait_bounds<T: Summary + Display>(item: &T) {
     println!("breaking news: {}", item.summarize());
 }
 
-impl SomeTrait for Tweet {}
-
-fn some_function_1<T: Display + Clone, U: Clone + Debug>(t: T, u: U) -> i32 {
-    5
-}
-
-fn some_function_2<T, U>(t: T, u: U) -> i32 
-    where T: Display + Clone,
-          U: Clone + Debug
-{
-    5
-}
-
-struct MyPair<T> {
-    first: T,
-    second: T,
-}
-
-impl<T> MyPair<T> {
-    fn new(first: T, second: T) -> MyPair<T> {
-        MyPair {
-            first,
-            second,
-        }
-    }
-}
-
-impl<T: Display + PartialOrd> MyPair<T> {
-    fn cmd_display(&self) {
-        if self.first > self.second {
-            println!("the largest is {}", self.first);
-        } else {
-            println!("the largest is {}", self.second);
-        }
-    }
-}
+impl Display for Tweet {}
