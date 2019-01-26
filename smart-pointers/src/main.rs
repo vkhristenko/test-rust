@@ -5,6 +5,8 @@ fn main() {
     test1();
     test2();
     test3();
+    test4();
+    test5();
 }
 
 fn test0() {
@@ -65,4 +67,26 @@ fn test3() {
     let m = MyBox::new(String::from("rust"));
     lmbda(&m);
     lmbda(&(*m)[..])
+}
+
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        println!("dropping CustomSmartPointer with data `{}`", self.data);
+    }
+}
+
+fn test4() {
+    let c = CustomSmartPointer { data: String::from("my stuff") };
+    let d = CustomSmartPointer { data: String::from("other stuff") };
+    println!("CustomSmartPointers created");
+}
+
+fn test5() {
+    let x = CustomSmartPointer { data: String::from("here we go") };
+    std::mem::drop(x);
+//    x.drop();
 }
