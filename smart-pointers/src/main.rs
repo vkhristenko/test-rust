@@ -7,6 +7,7 @@ fn main() {
     test3();
     test4();
     test5();
+    test6();
 }
 
 fn test0() {
@@ -89,4 +90,25 @@ fn test5() {
     let x = CustomSmartPointer { data: String::from("here we go") };
     std::mem::drop(x);
 //    x.drop();
+}
+
+enum ConsList {
+    Cons(i32, Rc<ConsList>),
+    Nil,
+}
+
+use std::rc::Rc;
+
+fn test6() {
+    let a = Rc::new(ConsList::Cons(5,
+        Rc::new(ConsList::Cons(10,
+            Rc::new(ConsList::Nil)))));
+    println!("count after creating a = {}", Rc::strong_count(&a));
+    let b = ConsList::Cons(3, Rc::clone(&a));
+    println!("count after creating b = {}", Rc::strong_count(&a));
+    {
+        let c = ConsList::Cons(4, Rc::clone(&a));
+        println!("coutn after creating c = {}", Rc::strong_count(&a));
+    }
+    println!("coutn after c goes out of scope = {}", Rc::strong_count(&a));
 }
