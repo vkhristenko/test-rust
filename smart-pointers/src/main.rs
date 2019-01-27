@@ -8,6 +8,7 @@ fn main() {
     test4();
     test5();
     test6();
+    test7();
 }
 
 fn test0() {
@@ -111,4 +112,100 @@ fn test6() {
         println!("coutn after creating c = {}", Rc::strong_count(&a));
     }
     println!("coutn after c goes out of scope = {}", Rc::strong_count(&a));
+}
+
+pub trait Messenger {
+    fn send(&self, msg: &str);
+}
+
+pub struct LimitTracker<'a, T: 'a + Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+
+impl<'a, T> LimitTracker<'a, T> 
+    where T: Messenger {
+    pub fn new(messenger: &T, max: usize) -> LimitTracker<T> {
+        LimitTracker {
+            messenger,
+            value: 0,
+            max
+        }
+    }
+
+    pub fn set_value(&mut self, value: usize) {
+        self.value = value;
+
+        let percentage_of_max = self.value as f64 / self.max as f64;
+
+        if percentage_of_max >= 1.0 {
+            self.messenger.send("error: you are above your quota");
+        } else if percentage_of_max >= 0.9 {
+            self.messenger.send("urgent warning: you've used more than 90% of your quota");
+        } else if percentage_of_max >= 0.75 {
+            self.messenger.send("warning: you've used more than 75% of your quota");
+        }
+    }
+
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::cell::RefCell;
+
+    struct MockMessenger {
+        sent_messages: RefCell<Vec<String>>,
+    }
+
+    impl MockMessenger {
+        fn new() -> MockMessenger {
+            MockMessenger {
+                sent_messages: RefCell::new(vec![])
+            }
+        }
+    }
+
+    impl Messenger for MockMessenger {
+        fn send(&self, message: &str) {
+            self.sent_messages.borrow_mut().push(String::from(message));
+
+            let some = RefCell::new(vec![1,2,3,4]);
+            let mut one_borrow = some.borrow_mut();
+            let mut two_borrow = some.borrow_mut();
+        }
+    }
+
+    #[test]
+    fn test_sends_warning() {
+        let mock_messenger = MockMessenger::new();
+        let mut tracker = LimitTracker::new(&mock_messenger, 100);
+
+        tracker.set_value(80);
+        assert_eq!(mock_messenger.sent_messages.borrow().len(), 1);
+    }
+}
+
+use std::cell::RefCell;
+
+#[derive(Debug)]
+enum ListConsNew {
+    Cons(Rc<RefCell<i32>>, Rc<ListConsNew>),
+    Nil
+}
+
+fn test7() {
+    let value = Rc::new(RefCell::new(5));
+
+    let a = Rc::new(ListConsNew::Cons(Rc::clone(&value), Rc::new(ListConsNew::Nil)));
+
+    let b = ListConsNew::Cons(Rc::new(RefCell::new(6)), Rc::clone(&a));
+    let c = ListConsNew::Cons(Rc::new(RefCell::new(10)), Rc::clone(&a));
+
+    *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
 }
