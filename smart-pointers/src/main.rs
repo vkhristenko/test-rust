@@ -9,6 +9,7 @@ fn main() {
     test5();
     test6();
     test7();
+    test8();
 }
 
 fn test0() {
@@ -208,4 +209,14 @@ fn test7() {
     println!("a after = {:?}", a);
     println!("b after = {:?}", b);
     println!("c after = {:?}", c);
+}
+
+use std::rc::{Rc, Weak};
+use std::cell::RefCell;
+
+#[derive(Debug)]
+struct Node {
+    value: i32,
+    parent: RefCell<Weak<Node>>,
+    children: RefCell<Vec<Rc<Node>>>,
 }
