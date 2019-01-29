@@ -10,6 +10,8 @@ fn main() {
     test2();
     test3();
     test4();
+    test5();
+    test6();
 }
 
 fn test0() {
@@ -106,4 +108,37 @@ fn test4() {
     for received in rx {
         println!("got: {}", received);
     }
+}
+
+use std::sync::{Mutex, Arc};
+
+fn test5() {
+    let m = Mutex::new(5);
+    {
+        let mut num = m.lock().unwrap();
+        *num = 6;
+    }
+
+    println!("m = {:?}", m);
+}
+
+fn test6() {
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("counter = {:?}", *counter.lock().unwrap());
 }
